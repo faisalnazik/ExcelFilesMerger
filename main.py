@@ -57,9 +57,9 @@ def get_dataframes(files, common_columns, unique_columns):
 
 def merge_dataframes(dataframes):
     '''
-    Function to merge the dataframes
+    Function to merge the dataframes with sorted columns
     '''
-    merged_df = pd.concat(dataframes)
+    merged_df = pd.concat(dataframes, sort=False)
     return merged_df
 
 def write_to_excel(merged_df):
