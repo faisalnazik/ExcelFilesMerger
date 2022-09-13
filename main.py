@@ -6,9 +6,9 @@ import os
 import pandas as pd
 
 
-def get_files():
+def get_files() -> list:
     '''
-    Function to get the excel files from the same directory
+    Function to get the excel files from the same directory and returns the list of files
     '''
     files = []
     for file in os.listdir():
@@ -17,9 +17,9 @@ def get_files():
     return files
 
 
-def get_columns(files):
+def get_columns(files) -> list:
     '''
-    Function to get the columns from the excel files
+    Function to get the columns from the excel files and returns the list of columns
     '''
     columns = []
     for file in files:
@@ -27,25 +27,25 @@ def get_columns(files):
         columns.append(df.columns)
     return columns
 
-def get_common_columns(columns):
+def get_common_columns(columns) -> list:
     '''
-    Function to get the common columns from the excel files
+    Function to get the common columns from the excel files and returns the list of common columns
     '''
     common_columns = set(columns[0])
     for column in columns:
         common_columns = common_columns.intersection(set(column))
     return list(common_columns)
 
-def get_unique_columns(columns, common_columns):
+def get_unique_columns(columns, common_columns) -> list:
     '''
-    Function to get the unique columns from the excel files
+    Function to get the unique columns from the excel files and returns the list of unique columns
     '''
     unique_columns = []
     for column in columns:
         unique_columns.append(list(set(column) - set(common_columns)))
     return unique_columns
 
-def get_dataframes(files, common_columns, unique_columns):
+def get_dataframes(files, common_columns, unique_columns) -> list:
     '''
     Function to get the dataframes from the excel files
     '''
@@ -55,19 +55,20 @@ def get_dataframes(files, common_columns, unique_columns):
         dataframes.append(df[common_columns + unique_columns[index]])
     return dataframes
 
-def merge_dataframes(dataframes):
+def merge_dataframes(dataframes) -> pd.DataFrame:
     '''
     Function to merge the dataframes with sorted columns
     '''
-    merged_df = pd.concat(dataframes, sort=False)
+    merged_df = pd.concat(dataframes, sort=True)
     return merged_df
 
-def write_to_excel(merged_df):
+def write_to_excel(merged_df) -> None:
     '''
-    Function to remove empty cells from columns and then write the merged dataframe to excel
+    Function to remove empty cols and then write the merged dataframe to excel
     '''
     merged_df = merged_df.dropna(axis=1, how='all')
     merged_df.to_excel('merged.xlsx', index=False)
+
 
 def main():
     '''
