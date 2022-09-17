@@ -15,7 +15,8 @@ def get_files() -> list:
     if not files:
         for folder in os.listdir():
             if os.path.isdir(folder):
-                files.extend([os.path.join(folder, file) for file in os.listdir(folder) if file.endswith('.xlsx')])
+                # ignore the files with startswith mergerd
+                files.extend([f'{folder}/{file}' for file in os.listdir(folder) if file.endswith('.xlsx') and not file.startswith('merged')])
     return files
     
 
