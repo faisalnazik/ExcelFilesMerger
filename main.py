@@ -15,7 +15,7 @@ def get_files() -> list:
     if not files:
         for folder in os.listdir():
             if os.path.isdir(folder):
-                # ignore the files with startswith mergerd
+                # Ignore the files that startswith 'merged'
                 files.extend([f'{folder}/{file}' for file in os.listdir(folder) if file.endswith('.xlsx') and not file.startswith('merged')])
     return files
     
@@ -70,7 +70,6 @@ def write_to_excel(merged_df) -> None:
     Function to remove empty cols and then write the merged dataframe to excel
     '''
     merged_df = merged_df.dropna(axis=1, how='all')
-    # Rename the file merged+current date and time
     merged_df.to_excel(f'merged_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.xlsx', index=False)
 
 
