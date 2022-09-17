@@ -4,18 +4,20 @@ creates a new excel file with the same columns merged including different colunm
 '''
 import os
 import pandas as pd
-
+import datetime
 
 def get_files() -> list:
     '''
-    Function to get the excel files from the same directory and returns the list of files
+    Function to get the excel files from the folders in same dir and returns the list of files
+    Check for files in the same directory and then search folders for the excel files
     '''
-    files = []
-    for file in os.listdir():
-        if file.endswith('.xlsx'):
-            files.append(file)
+    files = [file for file in os.listdir() if file.endswith('.xlsx')]
+    if not files:
+        for folder in os.listdir():
+            if os.path.isdir(folder):
+                files.extend([os.path.join(folder, file) for file in os.listdir(folder) if file.endswith('.xlsx')])
     return files
-
+    
 
 def get_columns(files) -> list:
     '''
@@ -67,7 +69,8 @@ def write_to_excel(merged_df) -> None:
     Function to remove empty cols and then write the merged dataframe to excel
     '''
     merged_df = merged_df.dropna(axis=1, how='all')
-    merged_df.to_excel('merged.xlsx', index=False)
+    # Rename the file merged+current date and time
+    merged_df.to_excel(f'merged_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.xlsx', index=False)
 
 
 def main():
