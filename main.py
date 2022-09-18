@@ -1,7 +1,3 @@
-'''
-Script to find the excel files from the same directory and checks the column names and then
-creates a new excel file with the same columns merged including different colunms.
-'''
 import os
 import pandas as pd
 import datetime
@@ -11,12 +7,11 @@ def get_files() -> list:
     Function to get the excel files from the folders in same dir and returns the list of files
     Check for files in the same directory and then search folders for the excel files
     '''
-    files = [file for file in os.listdir() if file.endswith('.xlsx')]
-    if not files:
-        for folder in os.listdir():
-            if os.path.isdir(folder):
-                # Ignore the files that startswith 'merged'
-                files.extend([f'{folder}/{file}' for file in os.listdir(folder) if file.endswith('.xlsx') and not file.startswith('merged')])
+    files = [file for file in os.listdir() if file.endswith('.xlsx') and not file.startswith('merged')]
+    for folder in os.listdir():
+        if os.path.isdir(folder):
+            # Ignore the files that startswith 'merged'
+            files.extend([f'{folder}/{file}' for file in os.listdir(folder) if file.endswith('.xlsx') and not file.startswith('merged')])
     return files
     
 
